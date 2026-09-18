@@ -1,0 +1,11 @@
+# All three are optional. With none of them set, `npm run demo` reads the
+# workspace from ./quonfig on disk and answers with a local Jev mock.
+
+# Real Jev answers (https://typesafe.ai)
+# export TYPESAFE_API_KEY=ts_...
+
+# Quonfig cloud instead of the on-disk workspace: edit prompts in the UI, no deploy.
+# export QUONFIG_BACKEND_SDK_KEY=qf_sk_...
+
+# Which environment's rules to evaluate in on-disk mode (default: development)
+# export QUONFIG_ENVIRONMENT=development

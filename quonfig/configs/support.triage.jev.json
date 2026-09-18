@@ -1,0 +1,39 @@
+{
+  "key": "support.triage.jev",
+  "type": "config",
+  "valueType": "json",
+  "schemaKey": "jev-triage",
+  "description": "What we ask Jev about every inbound support email. Edit the wording here, not in code.",
+  "default": {
+    "rules": [
+      {
+        "criteria": [{ "operator": "ALWAYS_TRUE" }],
+        "value": {
+          "type": "json",
+          "value": {
+            "variant": "triage-v1",
+            "timeoutMs": 800,
+            "questions": {
+              "urgent": {
+                "type": "noul",
+                "instructions": "The customer is on the {{plan}} plan. Does this email need a human reply today?",
+                "criteria": {
+                  "true": "Outage, money at risk, or an explicit deadline.",
+                  "false": "FYI, general question, or it can wait until tomorrow."
+                }
+              },
+              "frustration": {
+                "type": "score",
+                "instructions": "How frustrated is the customer who wrote this email?",
+                "criteria": ["Calm", "Annoyed but civil", "Angry or threatening to leave"]
+              }
+            },
+            "thresholds": { "urgent": 0.8 }
+          }
+        }
+      }
+    ]
+  },
+  "environments": [],
+  "variants": []
+}

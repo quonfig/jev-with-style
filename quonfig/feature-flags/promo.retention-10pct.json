@@ -1,0 +1,31 @@
+{
+  "key": "promo.retention-10pct",
+  "type": "feature_flag",
+  "valueType": "bool",
+  "description": "Show the 10% retention offer to paying customers Jev scored as frustrated. Plain, deterministic targeting on a stored attribute.",
+  "default": {
+    "rules": [
+      {
+        "criteria": [
+          {
+            "propertyName": "user.frustration",
+            "operator": "PROP_GREATER_THAN_OR_EQUAL",
+            "valueToMatch": { "type": "double", "value": 1.5 }
+          },
+          {
+            "propertyName": "user.plan",
+            "operator": "PROP_IS_NOT_ONE_OF",
+            "valueToMatch": { "type": "string_list", "value": ["free"] }
+          }
+        ],
+        "value": { "type": "bool", "value": true }
+      },
+      {
+        "criteria": [{ "operator": "ALWAYS_TRUE" }],
+        "value": { "type": "bool", "value": false }
+      }
+    ]
+  },
+  "environments": [],
+  "variants": []
+}

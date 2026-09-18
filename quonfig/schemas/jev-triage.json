@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Support triage (Jev)",
+  "description": "The questions Jev answers about an inbound support email, and the thresholds that turn its probabilities into decisions. Code owns the question names; this config owns everything else.",
+  "type": "object",
+  "required": ["variant", "questions", "thresholds"],
+  "additionalProperties": false,
+  "properties": {
+    "variant": {
+      "type": "string",
+      "description": "Label logged with every decision so outcomes can be joined back to the exact question wording."
+    },
+    "timeoutMs": {
+      "type": "integer",
+      "minimum": 50,
+      "maximum": 5000,
+      "default": 800,
+      "description": "Per-attempt timeout for the Jev call. Jev answers in 70-500ms; anything slower falls back to the non-AI path."
+    },
+    "questions": {
+      "type": "object",
+      "required": ["urgent", "frustration"],
+      "additionalProperties": false,
+      "properties": {
+        "urgent": {
+          "type": "object",
+          "title": "urgent (noul: yes/no)",
+          "required": ["type", "instructions"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "noul" },
+            "instructions": {
+              "type": "string",
+              "description": "Prompt. Mustache placeholders such as {{plan}} become typed parameters in generated code."
+            },
+            "criteria": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "true": { "type": "string", "description": "What a yes looks like." },
+                "false": { "type": "string", "description": "What a no looks like." }
+              }
+            }
+          }
+        },
+        "frustration": {
+          "type": "object",
+          "title": "frustration (score: rubric)",
+          "required": ["type", "instructions", "criteria"],
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "score" },
+            "instructions": {
+              "type": "string",
+              "description": "Prompt. Ask for a judgment against the rubric below."
+            },
+            "criteria": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 10,
+              "items": { "type": "string" },
+              "description": "Ordered rubric. Index 0 is the lowest score. Jev's answer can land between levels."
+            }
+          }
+        }
+      }
+    },
+    "thresholds": {
+      "type": "object",
+      "required": ["urgent"],
+      "additionalProperties": false,
+      "properties": {
+        "urgent": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Page on-call when P(urgent) is at or above this."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "key": "jev.enabled",
+  "type": "feature_flag",
+  "valueType": "bool",
+  "description": "Kill switch. Off means every call site skips Jev and takes the non-AI path.",
+  "default": {
+    "rules": [
+      {
+        "criteria": [{ "operator": "ALWAYS_TRUE" }],
+        "value": { "type": "bool", "value": true }
+      }
+    ]
+  },
+  "environments": [],
+  "variants": []
+}

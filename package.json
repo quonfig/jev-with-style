@@ -1,0 +1,28 @@
+{
+  "name": "jev-with-style",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Jev (TypeSafe AI) questions and thresholds managed as Quonfig config: typed, targetable, editable without a deploy.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "demo": "tsx src/demo.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "verify": "qfg verify quonfig",
+    "generate": "qfg generate --targets node-ts --dir quonfig -o generated"
+  },
+  "dependencies": {
+    "@quonfig/node": "^1.2.1",
+    "@typesafe-ai/sdk": "^0.6.0",
+    "mustache": "^4.2.0"
+  },
+  "devDependencies": {
+    "@quonfig/cli": "^0.0.73",
+    "@types/mustache": "^4.2.6",
+    "@types/node": "^22",
+    "tsx": "^4.20.0",
+    "typescript": "^5",
+    "vitest": "^3"
+  }
+}

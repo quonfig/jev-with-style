@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { TypeSafeClient } from "@typesafe-ai/sdk";
 import { describe, expect, it } from "vitest";
-import { createTriage } from "../src/jev";
+import { AI_GATEWAY_TYPESAFE_URL, createTriage, createTypeSafeClient } from "../src/jev";
 import { mockJevFetch } from "../src/mock-jev";
 import { initConfig, WORKSPACE_DIR } from "../src/quonfig";
 
@@ -68,5 +68,17 @@ describe("triage: config drives the Jev request", () => {
 
     expect(await triage("anything", { key: "u1", plan: "pro" })).toBeNull();
     expect(requests).toHaveLength(0);
+  });
+});
+
+describe("client selection", () => {
+  it("routes through Vercel AI Gateway when only AI_GATEWAY_API_KEY is set", () => {
+    const client = createTypeSafeClient({ AI_GATEWAY_API_KEY: "vck_test" });
+    expect(client.baseURL).toBe(AI_GATEWAY_TYPESAFE_URL);
+  });
+
+  it("prefers TypeSafe directly when TYPESAFE_API_KEY is set", () => {
+    const client = createTypeSafeClient({ TYPESAFE_API_KEY: "ts_test", AI_GATEWAY_API_KEY: "vck_test" });
+    expect(client.baseURL).toBe("https://api.typesafe.ai");
   });
 });

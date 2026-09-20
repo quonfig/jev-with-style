@@ -33,6 +33,9 @@ model: jev-latest   jev.enabled: true   variant: triage-v1
 ```
 
 Set `TYPESAFE_API_KEY` and the same command uses real Jev. Set
+`AI_GATEWAY_API_KEY` instead to reach Jev through
+[Vercel AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/typesafe)
+(its model id is `typesafe-ai/jev`; `jev.model` is the config for that). Set
 `QUONFIG_BACKEND_SDK_KEY` and the same command reads its config live from
 Quonfig cloud instead of disk. The code does not change.
 

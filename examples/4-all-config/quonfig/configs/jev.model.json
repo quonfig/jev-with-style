@@ -1,0 +1,16 @@
+{
+  "key": "jev.model",
+  "type": "config",
+  "valueType": "string",
+  "description": "Which Jev model to call. Pin production to a dated release; let development ride jev-latest.",
+  "default": {
+    "rules": [
+      {
+        "criteria": [{ "operator": "ALWAYS_TRUE" }],
+        "value": { "type": "string", "value": "jev-latest" }
+      }
+    ]
+  },
+  "environments": [],
+  "variants": []
+}

@@ -1,0 +1,16 @@
+{
+  "key": "jev.frustration.prompt",
+  "type": "config",
+  "valueType": "string",
+  "description": "The frustration question. The rubric stays in code.",
+  "default": {
+    "rules": [
+      {
+        "criteria": [{ "operator": "ALWAYS_TRUE" }],
+        "value": { "type": "string", "value": "How frustrated is the customer who wrote this email?" }
+      }
+    ]
+  },
+  "environments": [],
+  "variants": []
+}

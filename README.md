@@ -56,6 +56,11 @@ src/jev.ts                       the glue: config -> Jev request
 src/support-worker.ts            judge once at ingest, store a number on the user
 src/mock-jev.ts                  keyword heuristics behind the real TypeSafe client
 src/demo.ts                      three sample emails through the whole flow
+examples/                        the same call at four levels of config (see the post's addendum)
+  1-inline/                      no config: everything inline with noul()/score()
+  2-knobs/                       prompt strings, threshold, model, kill switch; no schema
+  4-all-config/                  one generic Jev schema; thresholds are flag rules
+  (level 3, the schema-bound decision, is the main workspace above)
 ```
 
 ## Edit a prompt

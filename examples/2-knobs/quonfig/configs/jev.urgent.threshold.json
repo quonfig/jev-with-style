@@ -1,0 +1,16 @@
+{
+  "key": "jev.urgent.threshold",
+  "type": "config",
+  "valueType": "double",
+  "description": "Page on-call when P(urgent) is at or above this.",
+  "default": {
+    "rules": [
+      {
+        "criteria": [{ "operator": "ALWAYS_TRUE" }],
+        "value": { "type": "double", "value": 0.8 }
+      }
+    ]
+  },
+  "environments": [],
+  "variants": []
+}

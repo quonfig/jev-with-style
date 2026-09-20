@@ -4,13 +4,17 @@
   "private": true,
   "type": "module",
   "description": "Jev (TypeSafe AI) questions and thresholds managed as Quonfig config: typed, targetable, editable without a deploy.",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "demo": "tsx src/demo.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "verify": "qfg verify quonfig",
-    "generate": "qfg generate --targets node-ts --dir quonfig -o generated"
+    "generate": "qfg generate --targets node-ts --dir quonfig -o generated",
+    "typecheck:examples": "tsc -p examples/1-inline && tsc -p examples/2-knobs && tsc -p examples/4-all-config",
+    "generate:examples": "qfg generate --targets node-ts --dir examples/2-knobs/quonfig -o examples/2-knobs/generated && qfg generate --targets node-ts --dir examples/4-all-config/quonfig -o examples/4-all-config/generated"
   },
   "dependencies": {
     "@quonfig/node": "^1.2.1",

@@ -1,0 +1,19 @@
+{
+  "key": "jev.urgent.prompt",
+  "type": "config",
+  "valueType": "string",
+  "description": "The urgent question. {{plan}} becomes a typed parameter in generated code.",
+  "default": {
+    "rules": [
+      {
+        "criteria": [{ "operator": "ALWAYS_TRUE" }],
+        "value": {
+          "type": "string",
+          "value": "The customer is on the {{plan}} plan. Does this email need a human reply today?"
+        }
+      }
+    ]
+  },
+  "environments": [],
+  "variants": []
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Jev questions",
+  "description": "Any set of Jev questions, in Jev's own request shape. One schema for every Jev call in the codebase. Code does not know the question names; it forwards the questions and stores each answer as a context attribute. Deliberately loose: criteria differs per question type (noul: {true,false}, score: string[], choice: {label: description}) and the tooling does not enforce oneOf yet.",
+  "type": "object",
+  "required": [
+    "questions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "questions": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "enum": [
+              "noul",
+              "score",
+              "choice"
+            ]
+          },
+          "instructions": {
+            "type": "string"
+          },
+          "criteria": {
+            "description": "noul: {true, false} descriptions. score: ordered rubric, 2 to 10 strings. choice: {label: description}."
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "key": "oncall.page",
+  "type": "feature_flag",
+  "valueType": "bool",
+  "description": "Page on-call. The 0.8 threshold is a rule, not a number in code.",
+  "default": {
+    "rules": [
+      {
+        "criteria": [
+          {
+            "propertyName": "jev.urgent",
+            "operator": "PROP_GREATER_THAN_OR_EQUAL",
+            "valueToMatch": { "type": "double", "value": 0.8 }
+          }
+        ],
+        "value": { "type": "bool", "value": true }
+      },
+      { "criteria": [{ "operator": "ALWAYS_TRUE" }], "value": { "type": "bool", "value": false } }
+    ]
+  },
+  "environments": [],
+  "variants": []
+}

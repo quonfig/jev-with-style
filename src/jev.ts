@@ -1,4 +1,4 @@
-import { TypeSafeClient, type NoulResponse, type ScoreCriteria, type ScoreResponse } from "@typesafe-ai/sdk";
+import { TypeSafeClient, TypeSafeError, type NoulResponse, type ScoreCriteria, type ScoreResponse } from "@typesafe-ai/sdk";
 import type { ContextObj } from "@quonfig/node";
 import type { QuonfigTypesafeNode } from "../generated/quonfig-server";
 import { mockJevFetch } from "./mock-jev";
@@ -52,8 +52,10 @@ export function createTriage(config: QuonfigTypesafeNode, typesafe: TypeSafeClie
     const decision = config.supportTriageJev(ctx); // typed straight from the JSON Schema
     const { urgent, frustration } = decision.questions;
 
-    const result = await typesafe.systemOne(
-      {
+    let result;
+    try {
+      result = await typesafe.systemOne(
+        {
         state: { email },
         model: config.jevModel(ctx),
         questions: {
@@ -62,8 +64,16 @@ export function createTriage(config: QuonfigTypesafeNode, typesafe: TypeSafeClie
           frustration: { type: "score", instructions: frustration.instructions, criteria: rubric(frustration.criteria) },
         },
       },
-      { timeout: decision.timeoutMs ?? 800, retry: { maxRetries: 0 } },
-    );
+        { timeout: decision.timeoutMs ?? 800, retry: { maxRetries: 0 } },
+      );
+    } catch (error) {
+      // Jev down, slow, or refusing: take the non-AI path, same as the kill switch.
+      if (error instanceof TypeSafeError) {
+        console.warn(`[jev] ${error.constructor.name}: ${error.message}`);
+        return null;
+      }
+      throw error;
+    }
 
     return { variant: decision.variant, model: result.model, answers: result.answers, thresholds: decision.thresholds };
   };

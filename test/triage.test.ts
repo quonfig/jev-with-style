@@ -82,3 +82,20 @@ describe("client selection", () => {
     expect(client.baseURL).toBe("https://api.typesafe.ai");
   });
 });
+
+describe("failure path", () => {
+  it("returns null (non-AI path) when Jev answers with an error, instead of throwing", async () => {
+    const { config } = await initConfig();
+    const client = new TypeSafeClient({
+      apiKey: "test",
+      retry: { maxRetries: 0 },
+      fetch: async () =>
+        new Response(JSON.stringify({ error: { message: "nope", type: "customer_verification_required" } }), {
+          status: 403,
+          headers: { "content-type": "application/json" },
+        }),
+    });
+    const triage = createTriage(config, client);
+    await expect(triage("Everything is down!!", { key: "u1", plan: "pro" })).resolves.toBeNull();
+  });
+});

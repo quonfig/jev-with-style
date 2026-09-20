@@ -9,13 +9,13 @@ declare module "@quonfig/node" {
     "jev.enabled": boolean
     "jev.model": string
     "promo.retention-10pct": boolean
-    "support.triage.jev": { "variant": string; /** Per-attempt timeout for the Jev call. Jev answers in 70-500ms; anything slower falls back to the non-AI path. */ "timeoutMs"?: number; "questions": { "urgent": { "type": "noul"; "instructions": string | undefined; "criteria"?: { /** What a yes looks like. */ "true"?: string; /** What a no looks like. */ "false"?: string } }; "frustration": { "type": "score"; "instructions": string; /** Ordered rubric. Index 0 is the lowest score. Jev's answer can land between levels. */ "criteria": Array<string> } }; "thresholds": { /** Page on-call when P(urgent) is at or above this. */ "urgent": number } }
+    "support.triage.jev": { "variant": string; /** Per-attempt timeout for the Jev call. Jev itself answers in 70-500ms; leave headroom for a gateway hop. Anything slower falls back to the non-AI path. */ "timeoutMs"?: number; "questions": { "urgent": { "type": "noul"; "instructions": string | undefined; "criteria"?: { /** What a yes looks like. */ "true"?: string; /** What a no looks like. */ "false"?: string } }; "frustration": { "type": "score"; "instructions": string; /** Ordered rubric. Index 0 is the lowest score. Jev's answer can land between levels. */ "criteria": Array<string> } }; "thresholds": { /** Page on-call when P(urgent) is at or above this. */ "urgent": number } }
   }
 
   export interface NodeServerConfigurationAccessor {
     "jev.enabled": boolean
     "jev.model": string
     "promo.retention-10pct": boolean
-    "support.triage.jev": { "variant": string; /** Per-attempt timeout for the Jev call. Jev answers in 70-500ms; anything slower falls back to the non-AI path. */ "timeoutMs"?: number; "questions": { "urgent": { "type": "noul"; "instructions": (...params: [{ "plan": string }]) => string; "criteria"?: { /** What a yes looks like. */ "true"?: string; /** What a no looks like. */ "false"?: string } }; "frustration": { "type": "score"; "instructions": string; /** Ordered rubric. Index 0 is the lowest score. Jev's answer can land between levels. */ "criteria": Array<string> } }; "thresholds": { /** Page on-call when P(urgent) is at or above this. */ "urgent": number } }
+    "support.triage.jev": { "variant": string; /** Per-attempt timeout for the Jev call. Jev itself answers in 70-500ms; leave headroom for a gateway hop. Anything slower falls back to the non-AI path. */ "timeoutMs"?: number; "questions": { "urgent": { "type": "noul"; "instructions": (...params: [{ "plan": string }]) => string; "criteria"?: { /** What a yes looks like. */ "true"?: string; /** What a no looks like. */ "false"?: string } }; "frustration": { "type": "score"; "instructions": string; /** Ordered rubric. Index 0 is the lowest score. Jev's answer can land between levels. */ "criteria": Array<string> } }; "thresholds": { /** Page on-call when P(urgent) is at or above this. */ "urgent": number } }
   }
 }

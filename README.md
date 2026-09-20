@@ -26,11 +26,14 @@ model: jev-latest   jev.enabled: true   variant: triage-v1
 ┌─────────┬───────┬──────────────┬───────────┬─────────────┬───────┬─────────────────┐
 │ (index) │ email │ plan         │ P(urgent) │ frustration │ paged │ retention offer │
 ├─────────┼───────┼──────────────┼───────────┼─────────────┼───────┼─────────────────┤
-│ 0       │ 'e1'  │ 'pro'        │ 0.99      │ 2           │ true  │ true            │
-│ 1       │ 'e2'  │ 'free'       │ 0.08      │ 0           │ false │ false           │
-│ 2       │ 'e3'  │ 'enterprise' │ 0.58      │ 1.15        │ false │ false           │
+│ 0       │ 'e1'  │ 'pro'        │ 0.94      │ 2           │ true  │ true            │
+│ 1       │ 'e2'  │ 'free'       │ 0.06      │ 0           │ false │ false           │
+│ 2       │ 'e3'  │ 'enterprise' │ 0.21      │ 1           │ false │ false           │
 └─────────┴───────┴──────────────┴───────────┴─────────────┴───────┴─────────────────┘
 ```
+
+(Those are real Jev answers, via Vercel AI Gateway, 276 to 429 ms per email. The
+mock's numbers are in the same ballpark by construction.)
 
 Set `TYPESAFE_API_KEY` and the same command uses real Jev. Set
 `AI_GATEWAY_API_KEY` instead to reach Jev through

@@ -7,12 +7,16 @@
   "default": {
     "rules": [
       {
-        "criteria": [{ "operator": "ALWAYS_TRUE" }],
+        "criteria": [
+          {
+            "operator": "ALWAYS_TRUE"
+          }
+        ],
         "value": {
           "type": "json",
           "value": {
             "variant": "triage-v1",
-            "timeoutMs": 800,
+            "timeoutMs": 2000,
             "questions": {
               "urgent": {
                 "type": "noul",
@@ -25,10 +29,16 @@
               "frustration": {
                 "type": "score",
                 "instructions": "How frustrated is the customer who wrote this email?",
-                "criteria": ["Calm", "Annoyed but civil", "Angry or threatening to leave"]
+                "criteria": [
+                  "Calm",
+                  "Annoyed but civil",
+                  "Angry or threatening to leave"
+                ]
               }
             },
-            "thresholds": { "urgent": 0.8 }
+            "thresholds": {
+              "urgent": 0.8
+            }
           }
         }
       }

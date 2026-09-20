@@ -64,7 +64,7 @@ export function createTriage(config: QuonfigTypesafeNode, typesafe: TypeSafeClie
           frustration: { type: "score", instructions: frustration.instructions, criteria: rubric(frustration.criteria) },
         },
       },
-        { timeout: decision.timeoutMs ?? 800, retry: { maxRetries: 0 } },
+        { timeout: decision.timeoutMs ?? 2000, retry: { maxRetries: 0 } },
       );
     } catch (error) {
       // Jev down, slow, or refusing: take the non-AI path, same as the kill switch.

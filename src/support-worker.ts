@@ -22,7 +22,9 @@ export function createSupportWorker(
 ) {
   return {
     async handleInbound(email: InboundEmail): Promise<{ paged: boolean; result: TriageResult | null }> {
+      const started = Date.now();
       const result = await triage(email.body, email.user);
+      const ms = Date.now() - started;
       if (!result) return { paged: false, result: null };
 
       const record: UserRecord = { ...(deps.users.get(email.user.key) ?? email.user), frustration: result.answers.frustration.score };
@@ -38,6 +40,7 @@ export function createSupportWorker(
         urgent: result.answers.urgent.noul,
         frustration: result.answers.frustration.score,
         paged,
+        ms,
       });
       return { paged, result };
     },

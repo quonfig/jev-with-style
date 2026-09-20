@@ -14,8 +14,8 @@
       "type": "integer",
       "minimum": 50,
       "maximum": 5000,
-      "default": 800,
-      "description": "Per-attempt timeout for the Jev call. Jev answers in 70-500ms; anything slower falls back to the non-AI path."
+      "default": 2000,
+      "description": "Per-attempt timeout for the Jev call. Jev itself answers in 70-500ms; leave headroom for a gateway hop. Anything slower falls back to the non-AI path."
     },
     "questions": {
       "type": "object",

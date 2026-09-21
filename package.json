@@ -13,8 +13,10 @@
     "typecheck": "tsc --noEmit",
     "verify": "qfg verify quonfig",
     "generate": "qfg generate --targets node-ts --dir quonfig -o generated",
-    "typecheck:examples": "tsc -p examples/1-inline && tsc -p examples/2-knobs && tsc -p examples/4-all-config",
-    "generate:examples": "qfg generate --targets node-ts --dir examples/2-knobs/quonfig -o examples/2-knobs/generated && qfg generate --targets node-ts --dir examples/4-all-config/quonfig -o examples/4-all-config/generated"
+    "typecheck:examples": "tsc -p examples/1-inline && tsc -p examples/2-knobs && tsc -p examples/4-all-config && tsc -p examples/5-declared",
+    "generate:examples": "qfg generate --targets node-ts --dir examples/2-knobs/quonfig -o examples/2-knobs/generated && qfg generate --targets node-ts --dir examples/4-all-config/quonfig -o examples/4-all-config/generated",
+    "sync:examples": "tsx examples/5-declared/sync-schema.ts",
+    "verify:examples": "qfg verify examples/2-knobs/quonfig && qfg verify examples/4-all-config/quonfig && qfg verify examples/5-declared/quonfig"
   },
   "dependencies": {
     "@quonfig/node": "^1.2.1",

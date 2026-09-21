@@ -1,0 +1,109 @@
+{
+  "title": "support.triage.jev",
+  "type": "object",
+  "required": [
+    "questions",
+    "thresholds"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "questions": {
+      "type": "object",
+      "required": [
+        "urgent",
+        "frustration"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "urgent": {
+          "type": "object",
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "noul"
+            },
+            "instructions": {
+              "type": "string",
+              "description": "Placeholders available: {{plan}}",
+              "pattern": "^(?:[^{]|\\{(?!\\{)|\\{\\{\\s*(plan)\\s*\\}\\})*$",
+              "default": "The customer is on the {{plan}} plan. Does this email need a human reply today?"
+            },
+            "criteria": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "true": {
+                  "type": "string"
+                },
+                "false": {
+                  "type": "string"
+                }
+              },
+              "default": {
+                "true": "Outage, money at risk, or an explicit deadline.",
+                "false": "FYI, general question, or it can wait until tomorrow."
+              }
+            }
+          }
+        },
+        "frustration": {
+          "type": "object",
+          "required": [
+            "type",
+            "criteria"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "score"
+            },
+            "instructions": {
+              "type": "string",
+              "description": "No placeholders.",
+              "pattern": "^(?:[^{]|\\{(?!\\{)|(?!))*$",
+              "default": "How frustrated is the customer who wrote this email?"
+            },
+            "criteria": {
+              "type": "array",
+              "description": "Ordered rubric, exactly 3 levels. Index 0 is the lowest score.",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": {
+                "type": "string"
+              },
+              "default": [
+                "Calm",
+                "Annoyed but civil",
+                "Angry or threatening to leave"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "thresholds": {
+      "type": "object",
+      "required": [
+        "urgent"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "urgent": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0.8
+        }
+      }
+    },
+    "timeoutMs": {
+      "type": "integer",
+      "minimum": 50,
+      "maximum": 5000,
+      "default": 2000
+    }
+  }
+}

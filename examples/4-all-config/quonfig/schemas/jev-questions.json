@@ -1,37 +1,70 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Jev questions",
-  "description": "Any set of Jev questions, in Jev's own request shape. One schema for every Jev call in the codebase. Code does not know the question names; it forwards the questions and stores each answer as a context attribute. Deliberately loose: criteria differs per question type (noul: {true,false}, score: string[], choice: {label: description}) and the tooling does not enforce oneOf yet.",
+  "description": "A set of named Jev questions in TypeSafe's request shape.",
   "type": "object",
-  "required": [
-    "questions"
-  ],
+  "required": ["questions"],
   "additionalProperties": false,
   "properties": {
     "questions": {
       "type": "object",
       "minProperties": 1,
+      "propertyNames": { "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$" },
       "additionalProperties": {
-        "type": "object",
-        "required": [
-          "type"
-        ],
-        "additionalProperties": false,
-        "properties": {
-          "type": {
-            "enum": [
-              "noul",
-              "score",
-              "choice"
-            ]
+        "oneOf": [
+          {
+            "title": "Yes / No",
+            "type": "object",
+            "required": ["type"],
+            "additionalProperties": false,
+            "properties": {
+              "type": { "const": "noul" },
+              "instructions": { "type": "string", "title": "Question" },
+              "criteria": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "true": { "type": "string", "title": "Means yes" },
+                  "false": { "type": "string", "title": "Means no" }
+                }
+              }
+            }
           },
-          "instructions": {
-            "type": "string"
+          {
+            "title": "Score",
+            "type": "object",
+            "required": ["type", "criteria"],
+            "additionalProperties": false,
+            "properties": {
+              "type": { "const": "score" },
+              "instructions": { "type": "string", "title": "Question" },
+              "criteria": {
+                "title": "Rubric, lowest first",
+                "description": "Jev returns the position counted from 0: first line = 0.",
+                "type": "array",
+                "minItems": 2,
+                "items": { "type": "string" }
+              }
+            }
           },
-          "criteria": {
-            "description": "noul: {true, false} descriptions. score: ordered rubric, 2 to 10 strings. choice: {label: description}."
+          {
+            "title": "Choice",
+            "type": "object",
+            "required": ["type", "criteria"],
+            "additionalProperties": false,
+            "properties": {
+              "type": { "const": "choice" },
+              "instructions": { "type": "string", "title": "Question" },
+              "criteria": {
+                "title": "Labels",
+                "type": "object",
+                "minProperties": 2,
+                "maxProperties": 255,
+                "additionalProperties": { "type": "string" }
+              }
+            }
           }
-        }
+        ]
       }
     }
   }

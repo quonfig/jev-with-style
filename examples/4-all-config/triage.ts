@@ -6,7 +6,7 @@
  * threshold is a feature-flag rule, so adding a question or moving a
  * threshold never touches code.
  */
-import type { Questions, TypeSafeClient } from "@typesafe-ai/sdk";
+import type { TypeSafeClient } from "@typesafe-ai/sdk";
 import type { QuonfigTypesafeNode } from "./generated/quonfig-server";
 
 export type JevContext = { user: { key: string; plan: string }; jev: Record<string, number | string> };
@@ -16,13 +16,13 @@ export function createTriage(config: QuonfigTypesafeNode, typesafe: TypeSafeClie
     const ctx = { user };
     if (!config.jevEnabled(ctx)) return null; // kill switch
 
-    // The generic schema can't express "criteria depends on type", so the
-    // generated type is loose and this cast is the price of generality.
+    // The schema is a tagged oneOf, so the generated type is Jev's own
+    // `Questions` shape and passes straight through with no cast.
     const { questions } = config.supportTriageJev(ctx);
     const result = await typesafe.systemOne({
       state: { email, plan: user.plan }, // no placeholders: facts go in the state
       model: config.jevModel(ctx),
-      questions: questions as unknown as Questions,
+      questions,
     });
 
     // Each answer becomes a number (or label) on the context. Flags do the rest.

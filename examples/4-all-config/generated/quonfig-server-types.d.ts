@@ -10,7 +10,7 @@ declare module "@quonfig/node" {
     "jev.model": string
     "oncall.page": boolean
     "promo.retention-10pct": boolean
-    "support.triage.jev": { "questions": Record<string, { "type": 'noul' | 'score' | 'choice'; "instructions"?: string; /** noul: {true, false} descriptions. score: ordered rubric, 2 to 10 strings. choice: {label: description}. */ "criteria"?: {  } }> }
+    "support.triage.jev": { "questions": Record<string, { "type": "noul"; /** Question */ "instructions"?: string; "criteria"?: { /** Means yes */ "true"?: string; /** Means no */ "false"?: string } } | { "type": "score"; /** Question */ "instructions"?: string; /** Jev returns the position counted from 0: first line = 0. */ "criteria": [string, string, ...string[]] } | { "type": "choice"; /** Question */ "instructions"?: string; /** Labels */ "criteria": Record<string, string> }> }
   }
 
   export interface NodeServerConfigurationAccessor {
@@ -18,6 +18,6 @@ declare module "@quonfig/node" {
     "jev.model": string
     "oncall.page": boolean
     "promo.retention-10pct": boolean
-    "support.triage.jev": { "questions": Record<string, { "type": 'noul' | 'score' | 'choice'; "instructions"?: string; /** noul: {true, false} descriptions. score: ordered rubric, 2 to 10 strings. choice: {label: description}. */ "criteria"?: {  } }> }
+    "support.triage.jev": { "questions": Record<string, { "type": "noul"; /** Question */ "instructions"?: string; "criteria"?: { /** Means yes */ "true"?: string; /** Means no */ "false"?: string } } | { "type": "score"; /** Question */ "instructions"?: string; /** Jev returns the position counted from 0: first line = 0. */ "criteria": [string, string, ...string[]] } | { "type": "choice"; /** Question */ "instructions"?: string; /** Labels */ "criteria": Record<string, string> }> }
   }
 }

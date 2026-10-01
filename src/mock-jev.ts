@@ -13,7 +13,7 @@ import type { Fetch } from "@typesafe-ai/sdk";
 
 const URGENT = [/\basap\b/, /\burgent/, /outage/, /\bdown\b/, /\btoday\b/, /deadline/, /right now/];
 const MONEY = [/charged/, /refund/, /invoice/, /\bmoney\b/, /double[- ]bill/];
-const ANGRY = [/furious/, /unacceptable/, /\bcancel/, /ridiculous/, /pissed/, /!!/, /\bworst\b/, /disappointed/, /fed up/];
+const ANGRY = [/furious/, /unacceptable/, /\bcancel/, /ridiculous/, /pissed/, /!!/, /\bworst\b/, /disappointed/, /fed up/, /competitor/];
 
 const hits = (text: string, patterns: RegExp[]) => patterns.filter((p) => p.test(text)).length;
 const round = (n: number) => Math.round(n * 1000) / 1000;
@@ -50,8 +50,9 @@ function answer(question: MockQuestion, text: string) {
   const labels = Object.keys(question.criteria);
   const scored = labels.map((label) => {
     const haystack = `${label} ${JSON.stringify(question.criteria[label] ?? "")}`.toLowerCase();
-    const words = haystack.match(/[a-z]{4,}/g) ?? [];
-    return { label, n: words.filter((w) => text.includes(w)).length };
+    // Match on word stems, so "charges" in a label counts "charged" in the email.
+    const stems = (haystack.match(/[a-z]{5,}/g) ?? []).map((w) => w.slice(0, 5));
+    return { label, n: stems.filter((stem) => text.includes(stem)).length };
   });
   const winner = scored.reduce((a, b) => (b.n > a.n ? b : a), scored[0]);
   const probabilities: Record<string, number> = {};

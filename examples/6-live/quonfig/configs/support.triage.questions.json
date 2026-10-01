@@ -1,0 +1,165 @@
+{
+  "key": "support.triage.questions",
+  "type": "config",
+  "valueType": "json",
+  "schemaKey": "jev-questions",
+  "description": "The questions we ask Jev about every inbound support email. Each rule holds its own full question set.",
+  "default": {
+    "rules": [
+      {
+        "criteria": [
+          {
+            "propertyName": "customer.plan",
+            "operator": "PROP_IS_ONE_OF",
+            "valueToMatch": {
+              "type": "string_list",
+              "value": [
+                "enterprise"
+              ]
+            }
+          }
+        ],
+        "value": {
+          "type": "json",
+          "value": {
+            "questions": {
+              "urgent": {
+                "type": "noul",
+                "instructions": "Does this email need a human reply within 4 hours, per the enterprise SLA?",
+                "criteria": {
+                  "true": "An outage, money at risk, or a deadline within a day.",
+                  "false": "A how-to question or anything that can wait until tomorrow."
+                }
+              },
+              "frustration": {
+                "type": "score",
+                "instructions": "How frustrated is the customer?",
+                "criteria": [
+                  "Calm or friendly",
+                  "Annoyed but civil",
+                  "Angry, or threatening to leave"
+                ]
+              },
+              "topic": {
+                "type": "choice",
+                "instructions": "What is this email mostly about?",
+                "criteria": {
+                  "billing": "Invoices, charges, refunds, or plan changes",
+                  "bug": "Something is broken or down",
+                  "howto": "Asking how to do something with the product"
+                }
+              },
+              "churn_risk": {
+                "type": "noul",
+                "instructions": "Is this account at risk of cancelling or not renewing?"
+              }
+            }
+          }
+        }
+      },
+      {
+        "criteria": [
+          {
+            "propertyName": "customer.key",
+            "operator": "PROP_IS_ONE_OF",
+            "valueToMatch": {
+              "type": "string_list",
+              "value": [
+                "globex"
+              ]
+            }
+          }
+        ],
+        "value": {
+          "type": "json",
+          "value": {
+            "questions": {
+              "urgent": {
+                "type": "noul",
+                "instructions": "Does this email need a human reply today?",
+                "criteria": {
+                  "true": "An outage, money at risk, or a deadline within a day.",
+                  "false": "A how-to question or anything that can wait until tomorrow."
+                }
+              },
+              "frustration": {
+                "type": "score",
+                "instructions": "How frustrated is the customer?",
+                "criteria": [
+                  "Calm or friendly",
+                  "Annoyed but civil",
+                  "Angry, or threatening to leave"
+                ]
+              },
+              "topic": {
+                "type": "choice",
+                "instructions": "What is this email mostly about?",
+                "criteria": {
+                  "billing": "Invoices, charges, refunds, or plan changes",
+                  "bug": "Something is broken or down",
+                  "howto": "Asking how to do something with the product",
+                  "contract": "Contract terms, pricing agreed in the contract, or renewals"
+                }
+              },
+              "language": {
+                "type": "choice",
+                "instructions": "What language is this email written in?",
+                "criteria": {
+                  "de": "German",
+                  "en": "English",
+                  "other": "Any other language"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "criteria": [
+          {
+            "operator": "ALWAYS_TRUE"
+          }
+        ],
+        "value": {
+          "type": "json",
+          "value": {
+            "questions": {
+              "urgent": {
+                "type": "noul",
+                "instructions": "Does this email need a human reply today?",
+                "criteria": {
+                  "true": "An outage, money at risk, or a deadline within a day.",
+                  "false": "A how-to question or anything that can wait until tomorrow."
+                }
+              },
+              "frustration": {
+                "type": "score",
+                "instructions": "How frustrated is the customer?",
+                "criteria": [
+                  "Calm or friendly",
+                  "Annoyed but civil",
+                  "Angry, or threatening to leave"
+                ]
+              },
+              "topic": {
+                "type": "choice",
+                "instructions": "What is this email mostly about?",
+                "criteria": {
+                  "billing": "Invoices, charges, refunds, or plan changes",
+                  "bug": "Something is broken or down",
+                  "howto": "Asking how to do something with the product"
+                }
+              },
+              "refund_request": {
+                "type": "noul",
+                "instructions": "Is the customer asking for a refund or a credit?"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "environments": [],
+  "variants": []
+}

@@ -8,16 +8,17 @@
     "node": ">=20"
   },
   "scripts": {
-    "demo": "tsx src/demo.ts",
+    "demo": "tsx examples/6-live/triage-live.ts",
+    "demo:schema-bound": "tsx src/demo.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "verify": "qfg verify quonfig",
     "generate": "qfg generate --targets node-ts --dir quonfig -o generated",
     "typecheck:examples": "tsc -p examples/1-inline && tsc -p examples/2-knobs && tsc -p examples/4-all-config && tsc -p examples/5-declared && tsc -p examples/6-live",
     "live": "tsx examples/6-live/triage-live.ts",
-    "generate:examples": "qfg generate --targets node-ts --dir examples/2-knobs/quonfig -o examples/2-knobs/generated && qfg generate --targets node-ts --dir examples/4-all-config/quonfig -o examples/4-all-config/generated",
+    "generate:examples": "qfg generate --targets node-ts --dir examples/2-knobs/quonfig -o examples/2-knobs/generated && qfg generate --targets node-ts --dir examples/4-all-config/quonfig -o examples/4-all-config/generated && qfg generate --targets node-ts --dir examples/6-live/quonfig -o examples/6-live/generated",
     "sync:examples": "tsx examples/5-declared/sync-schema.ts",
-    "verify:examples": "qfg verify examples/2-knobs/quonfig && qfg verify examples/4-all-config/quonfig && qfg verify examples/5-declared/quonfig"
+    "verify:examples": "qfg verify examples/2-knobs/quonfig && qfg verify examples/4-all-config/quonfig && qfg verify examples/5-declared/quonfig && qfg verify examples/6-live/quonfig"
   },
   "dependencies": {
     "@quonfig/node": "^1.2.1",

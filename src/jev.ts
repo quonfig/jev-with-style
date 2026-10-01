@@ -1,7 +1,7 @@
-import { TypeSafeClient, TypeSafeError, type NoulResponse, type ScoreCriteria, type ScoreResponse } from "@typesafe-ai/sdk";
+import { TypeSafeError, type TypeSafeClient, type NoulResponse, type ScoreCriteria, type ScoreResponse } from "@typesafe-ai/sdk";
 import type { ContextObj } from "@quonfig/node";
 import type { QuonfigTypesafeNode } from "../generated/quonfig-server";
-import { mockJevFetch } from "./mock-jev";
+export { createTypeSafeClient } from "./typesafe-client";
 
 export type TriageUser = { key: string; plan: string };
 
@@ -17,17 +17,6 @@ export type TriageResult = {
   answers: { urgent: NoulResponse; frustration: ScoreResponse };
   thresholds: { urgent: number };
 };
-
-/**
- * Two ways to reach Jev, picked by whether a key is present:
- *  - TYPESAFE_API_KEY → api.typesafe.ai
- *  - no key           → local mock, same request shape, fake answers
- */
-export function createTypeSafeClient(env: NodeJS.ProcessEnv = process.env): TypeSafeClient {
-  if (env.TYPESAFE_API_KEY) return new TypeSafeClient({ apiKey: env.TYPESAFE_API_KEY });
-  console.warn("[jev] no TYPESAFE_API_KEY: using a local mock. Same request shape, fake answers.");
-  return new TypeSafeClient({ apiKey: "mock", fetch: mockJevFetch });
-}
 
 /** Jev's score rubric is a tuple of at least two levels; the config stores a plain array. */
 function rubric(levels: string[]): ScoreCriteria {

@@ -25,7 +25,7 @@
     "mustache": "^4.2.0"
   },
   "devDependencies": {
-    "@quonfig/cli": "^0.0.73",
+    "@quonfig/cli": "^0.2.2",
     "@types/mustache": "^4.2.6",
     "@types/node": "^22",
     "tsx": "^4.20.0",

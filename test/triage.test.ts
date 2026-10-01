@@ -2,8 +2,8 @@ import { cpSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { TypeSafeClient } from "@typesafe-ai/sdk";
-import { describe, expect, it } from "vitest";
-import { AI_GATEWAY_TYPESAFE_URL, createTriage, createTypeSafeClient } from "../src/jev";
+import { describe, expect, it, vi } from "vitest";
+import { createTriage, createTypeSafeClient } from "../src/jev";
 import { mockJevFetch } from "../src/mock-jev";
 import { initConfig, WORKSPACE_DIR } from "../src/quonfig";
 
@@ -72,14 +72,17 @@ describe("triage: config drives the Jev request", () => {
 });
 
 describe("client selection", () => {
-  it("routes through Vercel AI Gateway when only AI_GATEWAY_API_KEY is set", () => {
-    const client = createTypeSafeClient({ AI_GATEWAY_API_KEY: "vck_test" });
-    expect(client.baseURL).toBe(AI_GATEWAY_TYPESAFE_URL);
+  it("calls TypeSafe directly when TYPESAFE_API_KEY is set", () => {
+    const client = createTypeSafeClient({ TYPESAFE_API_KEY: "ts_test" });
+    expect(client.baseURL).toBe("https://api.typesafe.ai");
   });
 
-  it("prefers TypeSafe directly when TYPESAFE_API_KEY is set", () => {
-    const client = createTypeSafeClient({ TYPESAFE_API_KEY: "ts_test", AI_GATEWAY_API_KEY: "vck_test" });
+  it("ignores AI_GATEWAY_API_KEY and falls back to the mock", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const client = createTypeSafeClient({ AI_GATEWAY_API_KEY: "vck_test" });
     expect(client.baseURL).toBe("https://api.typesafe.ai");
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining("using a local mock"));
+    warn.mockRestore();
   });
 });
 

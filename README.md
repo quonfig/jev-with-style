@@ -28,17 +28,14 @@ model: jev-latest   jev.enabled: true   variant: triage-v1
 ├─────────┼───────┼──────────────┼───────────┼─────────────┼───────┼─────────────────┤
 │ 0       │ 'e1'  │ 'pro'        │ 0.94      │ 2           │ true  │ true            │
 │ 1       │ 'e2'  │ 'free'       │ 0.06      │ 0           │ false │ false           │
-│ 2       │ 'e3'  │ 'enterprise' │ 0.21      │ 1           │ false │ false           │
+│ 2       │ 'e3'  │ 'enterprise' │ 0.22      │ 1           │ false │ false           │
 └─────────┴───────┴──────────────┴───────────┴─────────────┴───────┴─────────────────┘
 ```
 
-(Those are real Jev answers, via Vercel AI Gateway, 276 to 429 ms per email. The
-mock's numbers are in the same ballpark by construction.)
+(Those are real Jev answers from model `jev-1.13.0`, 160 to 290 ms per email.
+The mock's numbers are in the same ballpark by construction.)
 
 Set `TYPESAFE_API_KEY` and the same command uses real Jev. Set
-`AI_GATEWAY_API_KEY` instead to reach Jev through
-[Vercel AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/typesafe)
-(its model id is `typesafe-ai/jev`; `jev.model` is the config for that). Set
 `QUONFIG_BACKEND_SDK_KEY` and the same command reads its config live from
 Quonfig cloud instead of disk. The code does not change.
 
@@ -60,6 +57,7 @@ examples/                        the same call at five levels of config (see the
   1-inline/                      no config: everything inline with noul()/score()
   2-knobs/                       prompt strings, threshold, model, kill switch; no schema
   4-all-config/                  one generic Jev schema; thresholds are flag rules
+  6-live/                        the pasted jev-questions schema, live from Quonfig cloud, targeted per customer
   (level 3, the schema-bound decision, is the main workspace above)
 ```
 

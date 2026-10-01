@@ -18,22 +18,14 @@ export type TriageResult = {
   thresholds: { urgent: number };
 };
 
-/** Vercel AI Gateway speaks TypeSafe's own wire format at this base URL. */
-export const AI_GATEWAY_TYPESAFE_URL = "https://ai-gateway.vercel.sh/typesafe";
-
 /**
- * Three ways to reach Jev, picked by which key is present:
- *  - TYPESAFE_API_KEY    → api.typesafe.ai directly
- *  - AI_GATEWAY_API_KEY  → Vercel AI Gateway's TypeSafe-compatible endpoint
- *    (model id there is `typesafe-ai/jev`; put that in the jev.model config)
- *  - neither             → local mock, same request shape, fake answers
+ * Two ways to reach Jev, picked by whether a key is present:
+ *  - TYPESAFE_API_KEY → api.typesafe.ai
+ *  - no key           → local mock, same request shape, fake answers
  */
 export function createTypeSafeClient(env: NodeJS.ProcessEnv = process.env): TypeSafeClient {
   if (env.TYPESAFE_API_KEY) return new TypeSafeClient({ apiKey: env.TYPESAFE_API_KEY });
-  if (env.AI_GATEWAY_API_KEY) {
-    return new TypeSafeClient({ apiKey: env.AI_GATEWAY_API_KEY, baseURL: AI_GATEWAY_TYPESAFE_URL });
-  }
-  console.warn("[jev] no TYPESAFE_API_KEY or AI_GATEWAY_API_KEY: using a local mock. Same request shape, fake answers.");
+  console.warn("[jev] no TYPESAFE_API_KEY: using a local mock. Same request shape, fake answers.");
   return new TypeSafeClient({ apiKey: "mock", fetch: mockJevFetch });
 }
 

@@ -61,6 +61,44 @@ examples/                        the same call at five levels of config (see the
   (level 3, the schema-bound decision, is the main workspace above)
 ```
 
+## Live from Quonfig cloud, per customer (examples/6-live)
+
+This is the version the blog post walks through. It needs a Quonfig workspace
+and a Jev key.
+
+1. In your workspace, go to **Schemas**, click **+ Add Schema**, set the key to
+   `jev-questions` and paste the schema from
+   [Using Jev with Quonfig](https://docs.quonfig.com/docs/how-tos/jev) (the same
+   file is `examples/4-all-config/quonfig/schemas/jev-questions.json`).
+2. On the schema's page, click **+ Add config using this schema**. Name it
+   `support.triage.questions` and add your questions in the form. Add a
+   `jev.model` string config set to `jev-latest`.
+3. Optional: add rules on `customer.plan` or `customer.key`. Each rule holds
+   its own full set of questions.
+4. Run it:
+
+```sh
+export QUONFIG_BACKEND_SDK_KEY=...   # a backend SDK key for that workspace
+export TYPESAFE_API_KEY=...
+npm run live -- --watch
+```
+
+The runner sends three sample emails from three customers (Acme, enterprise;
+Globex, pro; Initech, free) and prints each answer. With `--watch` it keeps
+running: save a change in the app and the next run uses the new questions,
+with no restart.
+
+`examples/6-live/triage-typed.ts` is the same call with typed accessors. Its
+`generated/` folder was generated from our demo workspace; regenerate it from
+yours with `@quonfig/cli` 0.2.0 or later:
+
+```sh
+npx @quonfig/cli@latest generate --targets node-ts -w <your-org>/<your-workspace> -o examples/6-live/generated
+```
+
+`examples/6-live/probe-limits.ts` checks a few edges of the Jev API (needs
+only `TYPESAFE_API_KEY`).
+
 ## Edit a prompt
 
 Change the wording in `quonfig/configs/support.triage.jev.json` and run the
